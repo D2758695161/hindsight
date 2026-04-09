@@ -15,6 +15,7 @@ from datetime import UTC, datetime
 from typing import Any
 
 from ...worker.stage import set_stage
+from ..db.base import DatabaseBackend
 from ..db_utils import acquire_with_retry
 from ..memory_engine import fq_table
 from . import bank_utils
@@ -115,7 +116,7 @@ def _build_retain_params(contents_dicts, document_tags=None, doc_contents=None):
 
 
 async def _pre_resolve_phase1(
-    pool,
+    pool: Any,
     entity_resolver,
     bank_id: str,
     contents: list[RetainContent],
@@ -312,7 +313,7 @@ async def _insert_facts_and_links(
 
 
 async def _build_and_insert_entity_links_phase3(
-    pool,
+    pool: Any,
     entity_resolver,
     bank_id: str,
     phase3_ctx: Phase3Context,
@@ -361,7 +362,7 @@ async def _extract_and_embed(
     format_date_fn,
     fact_type_override: str | None,
     log_buffer: list[str],
-    pool=None,
+    pool: Any = None,
     operation_id: str | None = None,
     schema: str | None = None,
 ) -> tuple[list, list[ProcessedFact], list[ChunkMetadata], TokenUsage]:
@@ -399,7 +400,7 @@ async def _extract_and_embed(
 
 
 async def retain_batch(
-    pool,
+    pool: Any,
     embeddings_model,
     llm_config,
     entity_resolver,
@@ -639,7 +640,7 @@ _ANN_PARALLELISM = 4  # Max concurrent ANN chunks to avoid pool saturation
 
 
 async def _run_final_semantic_ann(
-    pool,
+    pool: Any,
     bank_id: str,
     unit_ids: list[str],
     log_buffer: list[str],
@@ -743,7 +744,7 @@ async def _run_final_semantic_ann(
 
 
 async def _streaming_retain_batch(
-    pool,
+    pool: Any,
     embeddings_model,
     llm_config,
     entity_resolver,
@@ -1168,7 +1169,7 @@ async def _streaming_retain_batch(
 
 
 async def _try_delta_retain(
-    pool,
+    pool: Any,
     embeddings_model,
     llm_config,
     entity_resolver,
@@ -1425,7 +1426,7 @@ async def _try_delta_retain(
 
 
 async def _delta_metadata_only(
-    pool,
+    pool: Any,
     bank_id,
     contents_dicts,
     contents,
